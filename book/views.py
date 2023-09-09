@@ -9,16 +9,39 @@ from library.permissions import IsAdminOrManagerOrReadOnly, IsAdminOrManagerOrUs
 
 
 class BookList(generics.ListCreateAPIView):
-    permission_classes = [IsAdminOrManagerOrReadOnly]
+    permission_classes = [IsAdminOrManagerOrReadOnly, IsAdminOrManagerOrUser]
     queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    # serializer_class = BookSerializer
+    def get_queryset(self):
+        user = self.request.user
+        print("======================user=============")
+        print(user)
+        print("======================user=============")
+        if user.role == "ADMIN":
+            return Book.objects.all()
+        elif user.role == "MANAGER":
+            return Book.objects.filter(status="AVAILABLE")
+        elif user.role == "NORMAL":
+            return Book.objects.filter(status="AVAILABLE", user=user)
+        
+    def perform_create(self, serializer):
+        serializer.save()
 
     
 class BookDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
     queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    # serializer_class = BookSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == "ADMIN":
+            return Book.objects.all()
+        elif user.role == "MANAGER":
+            return Book.objects.filter(status="AVAILABLE")
+        elif user.role == "NORMAL":
+            return Book.objects.filter(status="AVAILABLE", user=user)
 
 
 
