@@ -48,7 +48,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',   # Optional for token-based authentication
     ),
 }
-
+AUTHENTICATION_BACKENDS = [
+                           "library.backends.MyUserBackend"]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -90,8 +91,7 @@ DATABASES = {
     }
 }
 
-# AUTH_USER_MODEL = 'user.MyUser'  # Replace 'myapp' with your app name
-
+AUTH_USER_MODEL = 'user.MyUser'  # Replace 'myapp' with your app name
 
 
 # Password validation
