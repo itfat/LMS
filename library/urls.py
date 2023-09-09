@@ -22,3 +22,10 @@ urlpatterns = [
     path('', include("user.urls")),
     path('', include("book.urls"))
 ]
+
+
+urlpatterns += [
+    path('api-auth/', include('rest_framework.urls')),
+]
+
+

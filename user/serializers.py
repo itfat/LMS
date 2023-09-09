@@ -1,8 +1,9 @@
 from rest_framework import serializers
-from user.models import User
-
+from book.models import Book
+from user.models import CustomUser
 
 class UserSerializer(serializers.ModelSerializer):
+    # book = serializers.PrimaryKeyRelatedField(many=True, queryset=Book.objects.all())
     class Meta:
-        model = User
-        fields = '__all__'
+        model = CustomUser
+        fields = ['id', 'username', 'email', 'role']

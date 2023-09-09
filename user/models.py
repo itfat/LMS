@@ -1,14 +1,13 @@
 from django.db import models
 
-from library.BaseModel import BaseModel
+from django.contrib.auth.models import User
 
-# Create your models here.
+class CustomUser(User):
+    ROLES = [
+        ("NORMAL", "Normal"),
+        ("MANAGERr", "Manager"),
+        ("ADMIN", "Admin"),
+    ]
 
-class User(BaseModel):
-    name = models.CharField(max_length=200)
-    email_address = models.EmailField(max_length=300)
-    password = models.CharField(max_length=30)
+    role = models.CharField(max_length=10, choices=ROLES, default="NORMAL")
 
-
-    def __str__(self):
-        return self.name
