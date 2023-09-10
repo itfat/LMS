@@ -9,7 +9,8 @@ from library.permissions import IsAdminOrManagerOrReadOnly, IsAdminOrManagerOrUs
 
 
 class BookList(generics.ListCreateAPIView):
-    permission_classes = [IsAdminOrManagerOrReadOnly, IsAdminOrManagerOrUser]
+    # permission_classes = [IsAdminOrManagerOrReadOnly, IsAdminOrManagerOrUser]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Book.objects.all()
     # serializer_class = BookSerializer
     def get_queryset(self):
