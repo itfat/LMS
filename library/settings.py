@@ -77,7 +77,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware'
 ]
-LOGIN_REDIRECT_URL = 'books/'  # Replace '/books/' with the desired URL
+LOGIN_REDIRECT_URL = '/books/'  # Replace '/books/' with the desired URL
 
 
 ROOT_URLCONF = 'library.urls'
