@@ -59,7 +59,7 @@ def signup(request):
                 login(request, user)
             else:
                 print("user is not authenticated")
-            return redirect('users:profile')
+            return redirect('/profile/')
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})

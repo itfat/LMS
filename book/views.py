@@ -16,14 +16,15 @@ class BookList(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         print("======================user=============")
-        print(user)
+        print(user.role)
         print("======================user=============")
         if user.role == "ADMIN":
             return Book.objects.all()
         elif user.role == "MANAGER":
             return Book.objects.filter(status="AVAILABLE")
         elif user.role == "NORMAL":
-            return Book.objects.filter(status="AVAILABLE", user=user)
+            # return Book.objects.filter(status="AVAILABLE", user=user)
+            return Book.objects.filter(user=user) | Book.objects.filter(status="AVAILABLE")
         
     def perform_create(self, serializer):
         serializer.save()
@@ -33,7 +34,7 @@ class BookDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
     queryset = Book.objects.all()
-    # serializer_class = BookSerializer
+    serializer_class = BookSerializer
 
     def get_queryset(self):
         user = self.request.user
@@ -42,18 +43,22 @@ class BookDetail(generics.RetrieveUpdateDestroyAPIView):
         elif user.role == "MANAGER":
             return Book.objects.filter(status="AVAILABLE")
         elif user.role == "NORMAL":
-            return Book.objects.filter(status="AVAILABLE", user=user)
+            # return Book.objects.filter(status="AVAILABLE", user=user)
+            return Book.objects.filter(status="AVAILABLE")
 
 
 
 class BookAssign(UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAdminOrManagerOrUser]  # Allow assignment for all users
+    # permission_classes = [IsAdminOrManagerOrUser]  # Allow assignment for all users
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
+        print("------------instance is-----------------")
+        print(instance.status)
+        print("------------instance is-----------------")
 
         if instance.status == "AVAILABLE":
             user = request.user
